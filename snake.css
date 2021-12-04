@@ -1,0 +1,26 @@
+@font-face {
+    font-family: "Barking Cat";
+    src: url("assets/barking-cat-demo/Barking Cat DEMO.otf");
+}
+
+#scoreboard {
+    font-size: 32pt;
+    background-color: darkgreen;
+    color: white;
+    width: 600px;
+    padding: 0em 0.4em;
+    box-sizing: border-box;
+}
+
+#scoreboard .text {
+    font-family: 'Barking Cat';
+}
+
+#scoreboard {
+    display: flex;
+    justify-content: space-between;
+}
+
+#score, #highscore {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
