@@ -1,7 +1,9 @@
 ## DogeTrain
 ## Bite those Dogecoins like you wish you could in real life
 
-##[Play](snake.html)
+[Play](snake.html)
+
+------------------------------------------------------------------------
 
 Update log:
 12/04/2021: Release (1.0)
@@ -18,3 +20,7 @@ By making this Dogecoin eating simulation game, I hope to inspire people to chas
 
 Real creator's note:
 Dogecoin + Snake = Dogetrain. Basically, I started to play snake and found it fun so I re-created it and added a doge theme to it because I thought it would be kind of funny.
+
+------------------------------------------------------------------------
+
+What I will work on next: I can not currently identify the answer to this question. 
