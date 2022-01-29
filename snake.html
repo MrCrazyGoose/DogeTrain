@@ -4,21 +4,51 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title> DogeTrain </title>
     <link rel="stylesheet" href="snake.css">
     <script src="snake.js" defer></script>
 </head>
 <body>
-    <div id="scoreboard">
-        <div>
-            <span class="text"]>Score:</span>
-            <span id="score">420</span>
-        </div>
-        <div>
-            <span class="text">High Score:</span>
-            <span id="highscore">0</span>
-        </div>
-    </div>
-    <canvas width="600" height="600"></canvas>
+	<main>
+		<section id="DogeTrain">
+			<div class="scoreboard">
+				<div>
+					<span class="text"]>Score:</span>
+					<span class="score value">420</span>
+				</div>
+				<div>
+					<span class="text">High Score:</span>
+					<span class="highscore value">0</span>
+				</div>
+			</div>
+			<canvas width="600" height="600"></canvas>
+		</section>
+		
+		<form action="" id="settings">
+			<fieldset>
+				<legend>Settings</legend>
+				
+				<div>
+					<label for="speed"> Speed: <span class="value">0</span> </label>
+					<input type="range" name="speed" id="speed" min="1" max="100">
+				</div>
+				
+				<div>
+					<label for="food"> Food: <span class="value">0</span> </label>
+					<input type="range" name="food" id="food" min="0" max="10000">
+				</div>
+				
+				<div>
+					<label for="size"> Size: <span class="value">0</span> </label>
+					<input type="range" name="size" id="size" min="4" max="100">
+				</div>
+
+				<div>
+					<input type="button" id="start" value="Start Game (Alt-S)" accesskey="s">
+					<input type="button" id="resetSettings" value="Reset to Default Settings (Alt-R)" accesskey="r">
+				</div>
+			</fieldset>
+		</form>
+	</main>
 </body>
-</html>
+</html>>
