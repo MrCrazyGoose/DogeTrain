@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<link rel="shortcut icon" type="image/png" href="assets/dogeright.png">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> DogeTrain </title>
     <link rel="stylesheet" href="snake.css">
+	<script src="events.js" defer></script>
     <script src="snake.js" defer></script>
 </head>
 <body>
+	<!--<a href="http://www.directoryofgames.com/main.php?view=topgames&action=vote&v_tgame=2375" target="_blank">Vote for DogeTrain!</a>-->
+
 	<main>
 		<section id="DogeTrain">
 			<div class="scoreboard">
@@ -21,7 +25,7 @@
 					<span class="highscore value">0</span>
 				</div>
 			</div>
-			<canvas width="600" height="600"></canvas>
+			<canvas></canvas>
 		</section>
 		
 		<form action="" id="settings">
@@ -44,11 +48,11 @@
 				</div>
 
 				<div>
-					<input type="button" id="start" value="Start Game (Alt-S)" accesskey="s">
-					<input type="button" id="resetSettings" value="Reset to Default Settings (Alt-R)" accesskey="r">
+					<input type="button" id="start" value="Start Game" accesskey="s">
+					<input type="button" id="resetSettings" value="Reset Settings" accesskey="r">
 				</div>
 			</fieldset>
 		</form>
 	</main>
 </body>
-</html>>
+</html>

@@ -6,7 +6,7 @@ const UP = 4;
 
 // load images
 const dedImg = document.createElement("img");
-dedImg.src = "assets/gameover.jpg";
+dedImg.src = "assets/gameover.png";
 const moneysImg = document.createElement("img");
 moneysImg.src = "assets/dogecoin.png";
 const dogeRight = document.createElement("img");
@@ -178,16 +178,16 @@ class DogeTrainGUI {
 		this.train = dogeTrain;
 		
 		// DOM (Document Object Model = HTML) and other JS stuff
-		let canvas = parentElement.querySelector("#DogeTrain canvas");
+		this.canvas = parentElement.querySelector("#DogeTrain canvas");
 		this.SIZE = {
-			x: canvas.width / this.train.W,  // size of each "block" in px (horizontal)
-			y: canvas.height / this.train.H  // size of each "block" in px (vertical)
+			x: this.canvas.width / this.train.W,  // size of each "block" in canvas-space px (horizontal)
+			y: this.canvas.height / this.train.H  // size of each "block" in canvas-space px (vertical)
 		};
 		this.SIZE.min = Math.min(this.SIZE.x, this.SIZE.y);
 		this.SIZE.max = Math.max(this.SIZE.x, this.SIZE.y);
 		this.SIZE.avg = (this.SIZE.x + this.SIZE.y) / 2;
 		
-		this.ctx = canvas.getContext("2d");
+		this.ctx = this.canvas.getContext("2d");
 
 		this.scoreElement = parentElement.querySelector(".score");
 		
@@ -198,6 +198,7 @@ class DogeTrainGUI {
 
 		this.bestSongPlaying = false;
 		this.nextMoney = 1000;  // score goal to play next MoneySound
+		this.isFingerDown = false;
 		
 		// controls
 		let self = this;
@@ -208,27 +209,19 @@ class DogeTrainGUI {
 				location.reload();  // TODO
 			
 			if (event.key === "w" || event.key === "W" || event.key === "ArrowUp") {
-				if (train.dir !== DOWN) {
-					train.nextDir = UP;
-				}
+				self.onMoveUp();
 				event.preventDefault();
 			}
 			else if ((event.key === "a" || event.key === "A" || event.key === "ArrowLeft")) {
-				if (train.dir !== RIGHT) {
-					train.nextDir = LEFT;
-				}
+				self.onMoveLeft()
 				event.preventDefault();
 			}
 			else if ((event.key === "s" || event.key === "S" || event.key === "ArrowDown")) {
-				if (train.dir !== UP) {
-					train.nextDir = DOWN;
-				}
+				self.onMoveDown()
 				event.preventDefault();
 			}
 			else if ((event.key === "d" || event.key === "D" || event.key === "ArrowRight")) {
-				if (train.dir !== LEFT) {
-					train.nextDir = RIGHT;
-				}
+				self.onMoveRight()
 				event.preventDefault();
 			}
 			else if (event.key === " ") {
@@ -241,15 +234,112 @@ class DogeTrainGUI {
 			}
 		});
 
-		// event handlers
+		let mouseAndTouchMove = function({clientX, clientY}) {
+			let {deltaX, deltaY} = self.clientToGameXY(clientX, clientY);  // object destructuring
+			
+			const r = 1;  // Dedzown: how far away we can click (in "game" units)
+			if (deltaX * deltaX + deltaY * deltaY <= r * r) {
+				// airhorn!
+				self.playSound(airhornSound);
+			} else {
+	
+				// move Doge
+				if (Math.abs(deltaX) > Math.abs(deltaY)) {
+					if (deltaX > 0)
+						self.onMoveRight();
+					else
+						self.onMoveLeft();
+				}
+				else {
+					if (deltaY > 0)
+						self.onMoveDown();
+					else
+						self.onMoveUp();				
+				}
+			} 
+		}
+		
+		this.canvas.addEventListener("mousedown", function(event) {
+			self.isFingerDown = true;
+			mouseAndTouchMove(event);
+		});
+
+		this.canvas.addEventListener("mousemove", function(event) {
+			if (self.isFingerDown)
+				mouseAndTouchMove(event);
+		});
+		
+		this.canvas.addEventListener("mouseup", function(event) {
+			self.isFingerDown = false;
+		});
+
+		this.canvas.addEventListener("touchstart", function(event) {
+			self.isFingerDown = true;
+			mouseAndTouchMove(event.touches[0]);
+		});
+
+		this.canvas.addEventListener("touchmove", function(event) {
+			if (self.isFingerDown)
+				mouseAndTouchMove(event.touches[0]);
+		});
+		
+		this.canvas.addEventListener("touchend", function(event) {
+			self.isFingerDown = false;
+		});
+
+		// other event handlers
 		this.train.onBoomWithFood = function(event) {
 			self.boomWithFood(event);
 		};
 	}
 
+	clientToGameXY(x, y) {
+		let obj = {};
+
+		obj.bounds = this.canvas.getBoundingClientRect();
+		obj.sX = x - obj.bounds.left;  // coord. of mouse (in "screen"/"client" px)
+		obj.sY = y - obj.bounds.top;
+
+		obj.cX = obj.sX * (this.canvas.width / obj.bounds.width);  // coord. of mouse (in "canvas" px)
+		obj.cY = obj.sY * (this.canvas.height / obj.bounds.height);
+		
+		obj.gX = obj.cX / this.SIZE.x;  // coord. of mouse (in "game" blocks)
+		obj.gY = obj.cY / this.SIZE.y;
+
+		obj.deltaX = obj.gX - (this.train.snake[0].x + 0.5);  // distance between mouse and doge
+		obj.deltaY = obj.gY - (this.train.snake[0].y + 0.5);
+
+		return obj;
+	}
+
+	onMoveUp() {
+		if (this.train.dir !== DOWN) {
+			this.train.nextDir = UP;
+		}
+	}
+
+	onMoveLeft() {
+		if (this.train.dir !== RIGHT) {
+			this.train.nextDir = LEFT;
+		}
+	}
+
+	onMoveDown() {
+		if (this.train.dir !== UP) {
+			this.train.nextDir = DOWN;
+		}		
+	}
+
+	onMoveRight() {
+		if (this.train.dir !== LEFT) {
+			this.train.nextDir = RIGHT;
+		}		
+	}
+
+
 	drawBackground() {
 		this.ctx.fillStyle = "lightblue";
-		this.ctx.fillRect(0, 0, 600, 600);
+		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 	}
 
 	playSound(sound, startTime) {
@@ -346,7 +436,7 @@ class DogeTrainGUI {
 		clearInterval(this.intervalId);  // stop the "setInterval" loop
 		if (this.train.gameOver) {
 			this.drawBackground();
-			this.ctx.drawImage(dedImg, 0, 0, 600, 600);
+			this.ctx.drawImage(dedImg, 0, 0, this.canvas.width, this.canvas.height);
 			
 			this.playSound(oofSound, 0.5)
 		}
@@ -455,15 +545,14 @@ document.querySelector("#resetSettings").addEventListener("click", function() {
 // Inital drawing on Canvas before "new DogeTrainGUI()" is instantiated (i.e. before the user clicks "start")
 const dogeTrain = document.createElement("img");
 dogeTrain.addEventListener("load", function() {
-	let canvas = document.querySelector("#DogeTrain canvas")
+	let canvas = document.querySelector("#DogeTrain canvas");
+
+	// resize canvas to match image size
+	canvas.width = 1080;
+	canvas.height = 1080;
+
+	console.log(canvas.width, canvas.height);
 	canvas.getContext("2d").drawImage(dogeTrain, 0, 0, canvas.width, canvas.height);
 });
 
 dogeTrain.src = "assets/DogeTrain.png";
-
-
-
-
-
-
-// LINE 420
