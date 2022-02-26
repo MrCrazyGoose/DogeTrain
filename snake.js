@@ -279,6 +279,7 @@ class DogeTrainGUI {
 		});
 
 		this.canvas.addEventListener("touchmove", function(event) {
+			event.preventDefault();
 			if (self.isFingerDown)
 				mouseAndTouchMove(event.touches[0]);
 		});
