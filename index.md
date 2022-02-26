@@ -1,3 +1,0 @@
-## DogeTrain
-
-[Play](snake.html)
