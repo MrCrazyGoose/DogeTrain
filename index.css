@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
 @font-face {
     font-family: "Barking Cat";
     src: url("assets/barking-cat-demo/Barking Cat DEMO.otf");
@@ -37,7 +39,7 @@ h1 {
 	font-weight: bold;
 	font-size: 60px;
 	color: rgb(216, 158, 14);
-	font-family: fantasy;
+	font-family: 'Impact', 'Bebas Neue', 'Haettenschweiler', 'Arial Narrow Bold', 'sans-serif';
 	text-decoration: underline;
 }
 
@@ -60,7 +62,7 @@ h3 {
 .play {
 	color: rgb(216, 158, 14);
 	font-weight: bold;
-	font-family: fantasy;
+	font-family: 'Impact', 'Bebas Neue', 'Haettenschweiler', 'Arial Narrow Bold', 'sans-serif';
 	text-align: left;
 	font-size: 35px;
 	text-decoration: none;
@@ -74,7 +76,7 @@ h3 {
 .video {
 	color: rgb(216, 158, 14);
 	font-weight: bold;
-	font-family: fantasy;
+	font-family: 'Impact', 'Bebas Neue', 'Haettenschweiler', 'Arial Narrow Bold', 'sans-serif';
 	text-align: left;
 	font-size: 20px;
 	text-decoration: none;
