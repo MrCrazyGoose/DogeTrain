@@ -192,7 +192,7 @@ class DogeTrainGUI {
 		this.scoreElement = parentElement.querySelector(".score");
 		
 		this.hsElement = parentElement.querySelector(".highscore");
-		this.hsElement.innerText = this.train.highScore;
+		this.hsElement.innerHTML = ("" + this.train.highScore).replace("Infinity", "&infin;");
 
 		this.intervalId = null;
 
@@ -206,7 +206,7 @@ class DogeTrainGUI {
 		document.addEventListener("keydown", function(event) {
 			console.log(event.key);
 			if (train.gameOver)
-				location.reload();  // TODO
+				gui.restart();
 			
 			if (event.key === "w" || event.key === "W" || event.key === "ArrowUp") {
 				self.onMoveUp();
@@ -292,6 +292,9 @@ class DogeTrainGUI {
 		this.train.onBoomWithFood = function(event) {
 			self.boomWithFood(event);
 		};
+
+		// callbacks
+		this.onStop = null;
 	}
 
 	clientToGameXY(x, y) {
@@ -365,9 +368,13 @@ class DogeTrainGUI {
 		}, delay);
 	}
 
+	restart() {
+		location.reload();  // For now...
+	}
+
 	// called once per frame (after "update") to redraw GUI elements that may have changed
 	draw() {
-		this.hsElement.innerText = this.train.highScore;  // update hish score each frame. (TODO: make more efficient with "callback"/"event listener")
+		this.hsElement.innerHTML = ("" + this.train.highScore).replace("Infinity", "&infin;");  // update hish score each frame. (TODO: make more efficient with "callback"/"event listener")
 
 		if (this.train.gameOver) {
 			this.stop();
@@ -439,7 +446,10 @@ class DogeTrainGUI {
 			this.drawBackground();
 			this.ctx.drawImage(dedImg, 0, 0, this.canvas.width, this.canvas.height);
 			
-			this.playSound(oofSound, 0.5)
+			this.playSound(oofSound, 0.5);
+
+			if (this.onStop)
+				this.onStop();
 		}
 	}
 }
@@ -450,6 +460,9 @@ function lerp(x_val, x0, y0, x1, y1) {
 	let rate = (y1 - y0) / (x1 - x0);  // slope formula
 	return rate * (x_val - x0) + y0;   // point-slope form
 }
+
+// parse query string
+let query = new URLSearchParams(location.search);
 
 // settings
 class Setting {
@@ -479,8 +492,8 @@ class Setting {
 			this.slider.addEventListener(eventType, updateValue);
 		}
 		
-		// load previous setting value from "localStorage" or use default
-		let storedValue = localStorage.getItem(this.itemName);
+		// use settings from query, or load previous setting value from "localStorage", or use default
+		let storedValue = query.has(name) ? query.get(name) : localStorage.getItem(this.itemName);
 		if (storedValue !== null) {
 			this.change(storedValue);
 		} else {
@@ -529,13 +542,34 @@ foodSetting.updateMax();
 
 
 // start game button
-document.querySelector("#start").addEventListener("click", function() {
+const startBtnListener = function() {
 	let logic = new DogeTrain(sizeSetting.value, sizeSetting.value, foodSetting.value);
 	let gui = new DogeTrainGUI(logic, document.querySelector("#DogeTrain"));
+	let button = document.querySelector("#start");
+	
+	gui.onStop = function() {
+		button.value = "Play Again";
+		button.disabled = false;
+		button.removeEventListener("click", startBtnListener);
+		button.addEventListener("click", function() {
+			gui.restart();
+		});	
+		document.querySelector("#tiger-wrapper").classList.add("show");
+	};
+
+	// Share button functionality
+	let tigers = document.querySelectorAll(".tigers");
+	tigers.forEach(tiger => tiger.addEventListener("click", function(){
+		navigator.share({
+			url:`https://train.cf/snake.html?size=${sizeSetting.slider.value}&speed=${speedSetting.slider.value}&food=${foodSetting.slider.value}`,
+			text: `My high score in DogeTrain is ${logic.highScore}! You can play with my settings using the link below!\n\nI bet you can't beat me!`
+		});
+	}));
+
 	gui.start(speedSetting.value);
-	let button = document.querySelector("#start")
-	button.disabled = true
-});
+	button.disabled = true;
+};
+document.querySelector("#start").addEventListener("click", startBtnListener);
 
 // reset settings button
 document.querySelector("#resetSettings").addEventListener("click", function() {

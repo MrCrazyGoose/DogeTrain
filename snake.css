@@ -48,7 +48,7 @@ main {
     display: flex;
     justify-content: space-between;
 
-    font-size: calc(0.075 * var(--canvas-size));
+    font-size: calc(0.06 * var(--canvas-size));
     background-color: darkgreen;
     color: white;
     width: 100%;
@@ -117,4 +117,248 @@ main {
     text-shadow: none;
     color: white;
 
+}
+
+#canvas-wrapper {
+    position: relative; /* anchor for children */
+    overflow: hidden;
+}
+
+#tiger-wrapper {
+    display: none;
+}
+
+#tiger-wrapper.show {
+    display: block;
+}
+
+@keyframes tigerStart {
+    from {
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    to {
+        left: 0;
+        top: 0;
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes tiger-running {
+    0% {
+        left: 0;
+        top: 0;
+        transform: translate(0, 0) rotate(0deg);
+    }
+
+    25% {
+        left: 100%;
+        top: 0;
+        transform: translate(-100%, 0) rotate(360deg);
+    }
+
+    50% {
+        left: 100%;
+        top: 100%;
+        transform: translate(-100%, -100%) rotate(720deg);
+    }
+
+    75% {
+        left: 0%;
+        top: 100%;
+        transform: translate(0, -100%) rotate(1080deg);
+    }
+
+    100% {
+        left: 0;
+        top: 0;
+        transform: translate(0, 0) rotate(1440deg);
+    }
+}
+
+@keyframes tigerStart2 {
+    from {
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    to {
+        left: 100%;
+        top: 0;
+        transform: translate(-100%, 0);
+    }
+}
+
+@keyframes tiger-running2 {
+    0% {
+        left: 100%;
+        top: 0;
+        transform: translate(-100%, 0) rotate(0deg);
+    }
+
+    25% {
+        left: 100%;
+        top: 100%;
+        transform: translate(-100%, -100%) rotate(360deg);
+    }
+
+    50% {
+        left: 0%;
+        top: 100%;
+        transform: translate(0, -100%) rotate(720deg);
+    }
+
+    75% {
+        left: 0;
+        top: 0;
+        transform: translate(0, 0) rotate(1080deg);
+    }
+
+    100% {
+        left: 100%;
+        top: 0;
+        transform: translate(-100%, 0) rotate(1440deg);
+    }
+}
+
+@keyframes tigerStart3 {
+    from {
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    to {
+        left: 100%;
+        top: 100%;
+        transform: translate(-100%, -100%);
+    }
+}
+
+@keyframes tiger-running3 {
+    0% {
+        left: 100%;
+        top: 100%;
+        transform: translate(-100%, -100%) rotate(0deg);
+    }
+
+    25% {
+        left: 0%;
+        top: 100%;
+        transform: translate(0, -100%) rotate(360deg);
+    }
+
+    50% {
+        left: 0;
+        top: 0;
+        transform: translate(0, 0) rotate(720deg);
+    }
+
+    75% {
+        left: 100%;
+        top: 0;
+        transform: translate(-100%, 0) rotate(1080deg);
+    }
+
+    
+    100% {
+        left: 100%;
+        top: 100%;
+        transform: translate(-100%, -100%) rotate(1440deg);
+    }
+}
+
+@keyframes tigerStart4 {
+    from {
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    to {
+        left: 0%;
+        top: 100%;
+        transform: translate(0, -100%);
+    }
+}
+
+@keyframes tiger-running4 {
+    0% {
+        left: 0%;
+        top: 100%;
+        transform: translate(0, -100%) rotate(0deg);
+    }
+
+    25% {
+        left: 0;
+        top: 0;
+        transform: translate(0, 0) rotate(360deg);
+    }
+
+    50% {
+        left: 100%;
+        top: 0;
+        transform: translate(-100%, 0) rotate(720deg);
+    }
+
+    75% {
+        left: 100%;
+        top: 100%;
+        transform: translate(-100%, -100%) rotate(1080deg);
+    }
+
+    100% {
+        left: 0%;
+        top: 100%;
+        transform: translate(0, -100%) rotate(1440deg);
+    }
+}
+
+.tigers {
+    font-size: 50px;
+	font-family: "Barking Cat", sans-serif;
+	border-color: rgb(216, 158, 14);
+	color: white;
+	border-width: 10px;
+	border-style: outset;
+	border-radius: 5px;
+	background: linear-gradient(rgb(9, 255, 0), rgb(255, 0, 0));
+	padding: 0.25em 1em;
+	cursor: pointer;
+    display: inline-block;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.tiger:hover {
+	font-weight: 900;
+}
+
+.show .t1 {
+    animation:
+        tigerStart 1.125s ease-in 0s 1,
+        tiger-running 5s linear 1.125s infinite;
+}
+
+.show .t2 {
+    animation:
+        tigerStart2 1.125s ease-in 0s 1,
+        tiger-running2 5s linear 1.125s infinite;
+}
+
+.show .t3 {
+    animation:
+        tigerStart3 1.125s ease-in 0s 1,
+        tiger-running3 5s linear 1.125s infinite;
+}
+
+.show .t4 {
+    animation:
+        tigerStart4 1.125s ease-in 0s 1,
+        tiger-running4 5s linear 1.125s infinite;
 }
