@@ -562,7 +562,7 @@ const startBtnListener = function() {
 	tigers.forEach(tiger => tiger.addEventListener("click", function(){
 		navigator.share({
 			url:`https://train.cf/snake.html?size=${sizeSetting.slider.value}&speed=${speedSetting.slider.value}&food=${foodSetting.slider.value}`,
-			text: `My high score in DogeTrain is ${logic.highScore}! You can play with my settings using the link below!\n\nI bet you can't beat me!`
+			text: `My high score in DogeTrain is ${logic.highScore}! You can play with my settings using the link below!\n\nI bet you can't beat me (i'm actually kind of pro)!`
 		});
 	}));
 
